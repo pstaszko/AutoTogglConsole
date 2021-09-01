@@ -30,6 +30,7 @@ namespace AutoTogglConsole
             return l;
         }
 
+
         static void Main(string[] args)
         {
             //args = new string[] { "http://localhost/hud" };
