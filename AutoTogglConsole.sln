@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibrary", "..\SharedL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTogglConsole", "AutoTogglConsole\AutoTogglConsole.csproj", "{7F59CE61-EE6A-4F06-AA8A-5413BE075079}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalExtensions", "..\WesternCap\UniversalExtensions\UniversalExtensions.csproj", "{382DD02D-3626-43D3-96FF-D23B138FC564}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{7F59CE61-EE6A-4F06-AA8A-5413BE075079}.Dev2|Any CPU.Build.0 = Debug|Any CPU
 		{7F59CE61-EE6A-4F06-AA8A-5413BE075079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F59CE61-EE6A-4F06-AA8A-5413BE075079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{382DD02D-3626-43D3-96FF-D23B138FC564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{382DD02D-3626-43D3-96FF-D23B138FC564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{382DD02D-3626-43D3-96FF-D23B138FC564}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{382DD02D-3626-43D3-96FF-D23B138FC564}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{382DD02D-3626-43D3-96FF-D23B138FC564}.Dev2|Any CPU.ActiveCfg = Debug|Any CPU
+		{382DD02D-3626-43D3-96FF-D23B138FC564}.Dev2|Any CPU.Build.0 = Debug|Any CPU
+		{382DD02D-3626-43D3-96FF-D23B138FC564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{382DD02D-3626-43D3-96FF-D23B138FC564}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

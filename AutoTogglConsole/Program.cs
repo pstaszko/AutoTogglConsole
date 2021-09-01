@@ -32,19 +32,43 @@ namespace AutoTogglConsole
 
         static void Main(string[] args)
         {
-            if (ConfigurationManager.AppSettings == null || ConfigurationManager.AppSettings.Count == 0) {
-                Console.WriteLine("Application settings are missing");
-                Console.ReadLine();
-            } else {
-                handler = new ConsoleEventDelegate(ConsoleEventCallback);
-                SetConsoleCtrlHandler(handler, true);
-                tb.Init(JFUtil.Base64Encode($@"{ConfigurationManager.AppSettings["apiKey"]}:api_token"));
-                CheckForARunningTimer();
-                while (true) {
-                    CheckIdleTime();
-                    CheckActiveWindow();
-                    System.Threading.Thread.Sleep(5000);
+            //args = new string[] { "http://localhost/hud" };
+            if (args.Length > 0) {
+                Console.WriteLine("Prepared to call: " + args[0]);
+            }
+            try {
+                //Console.WriteLine("Start?");
+                //Console.ReadLine();
+                if (ConfigurationManager.AppSettings == null || ConfigurationManager.AppSettings.Count == 0) {
+                    Console.WriteLine("Application settings are missing");
+                    Console.ReadLine();
+                } else {
+                    Console.WriteLine("Killing others");
+                    try {
+                        Console.WriteLine(UniversalExtensions.Static.MyStartup.KillOtherInstances());
+                    }
+                    catch (Exception ex) {
+                        Console.WriteLine(ex.Message);
+                    }
+                    Console.WriteLine("Killed others");
+                    handler = new ConsoleEventDelegate(ConsoleEventCallback);
+                    SetConsoleCtrlHandler(handler, true);
+                    tb.Init(JFUtil.Base64Encode($@"{ConfigurationManager.AppSettings["apiKey"]}:api_token"));
+                    CheckForARunningTimer();
+                    while (true) {
+                        CheckIdleTime();
+                        var callback = "";
+                        if (args.Length > 0) {
+                            callback = args[0];
+                        }
+                        CheckActiveWindow(callback);
+                        System.Threading.Thread.Sleep(2000);
+                    }
                 }
+            }
+            catch (Exception ex2) {
+                Console.WriteLine("Total failure: " + ex2.Message);
+                Console.ReadLine();
             }
         }
 
@@ -57,7 +81,7 @@ namespace AutoTogglConsole
             }
         }
 
-        private static void CheckActiveWindow()
+        private static void CheckActiveWindow(string callback)
         {
             if (!idle) {
                 var currentActive = GetActiveWindowTitle();
@@ -71,6 +95,9 @@ namespace AutoTogglConsole
                             break;
                         }
                     }
+                    if (callback != "") {
+                        DoCallback(callback, currentActive);
+                    }
                     if (!anyMatches && aTimerIsRunning) {
                         clt("Window doesn't match any keywords in any projects. Stopping timer.");
                         tb.StopRunningTimer();
@@ -80,7 +107,21 @@ namespace AutoTogglConsole
                 }
             }
         }
-
+        private static void DoCallback(string callbackURL, string title)
+        {
+            callbackURL = callbackURL.TrimEnd('/');
+            title = title.Trim();
+            var c = new System.Net.WebClient();
+            var url = callbackURL + "?title=" + System.Net.WebUtility.UrlEncode(title);
+            try {
+                Console.WriteLine("Calling: " + url);
+                var _ = c.DownloadString(url);
+                Console.WriteLine("Call complete");
+            }
+            catch {
+                Console.WriteLine("Failed to call: " + url);
+            }
+        }
         private static bool CurrentActiveIsValid(string currentActive) => lastActive != currentActive && currentActive.JFIsNotNull() && !IsNeutralWindow(currentActive);
 
         private static bool KeywordExistsInActiveWindowTitle(Project project, string currentActive)
